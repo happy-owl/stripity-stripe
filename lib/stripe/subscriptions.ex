@@ -16,7 +16,7 @@ defmodule Stripe.Subscriptions do
   @endpoint "customers"
 
   @doc """
-  Starts a subscription for the specified customer. 
+  Starts a subscription for the specified customer.
 
   ## Example
 
@@ -35,7 +35,7 @@ defmodule Stripe.Subscriptions do
   end
 
   @doc """
-  Starts a subscription for the specified customer using given api key. 
+  Starts a subscription for the specified customer using given api key.
 
   ## Example
 
@@ -109,9 +109,8 @@ defmodule Stripe.Subscriptions do
   Stripe.Customers.change_subscription "customer_id", "subscription_id", "plan_id", key
   ```
   """
-  def change(customer_id, sub_id, plan_id, key) do
-    Stripe.make_request_with_key(:post, "#{@endpoint}/#{customer_id}/subscriptions/#{sub_id}", key, [plan: plan_id])
-    |> Stripe.Util.handle_stripe_response
+  def change(customer_id, sub_id, plan_id, key) when is_binary(plan_id) do
+    change customer_id, sub_id, [plan: plan_id], key
   end
 
   @doc """
@@ -155,7 +154,7 @@ defmodule Stripe.Subscriptions do
     Stripe.make_request_with_key(:delete, "#{@endpoint}/#{customer_id}/subscriptions/#{sub_id}", key, opts)
     |> Stripe.Util.handle_stripe_response
   end
-  
+
   @doc """
   Cancel all subscriptions for account.
 
